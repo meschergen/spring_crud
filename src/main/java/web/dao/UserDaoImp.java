@@ -36,12 +36,17 @@ public class UserDaoImp implements UserDao{
     }
 
     @Override
-    public void remove(User user) {
+    public void remove(Long id) {
 
     }
 
     @Override
     public User getById(Long id) {
         return new User(id,"Ivan" + id, "Ivanov" + id,"email_" + id);
+    }
+
+    @Override
+    public void update(Long id, User user) {
+
     }
 }
