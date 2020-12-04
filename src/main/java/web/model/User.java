@@ -1,6 +1,9 @@
 package web.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * 04.12.2020
@@ -36,12 +39,18 @@ public class User {
     public Long getId() { return id; }
 
     @Column(name = "first_name")
+    @NotNull(message = "First name is required")
+    @Size(min = 2, max = 40, message = "Valid size of first name is from 2, to 30 characters")
     public String getFirstName() { return firstName; }
 
     @Column(name = "last_name")
+    @NotNull(message = "Last name is required")
+    @Size(min = 2, max = 40, message = "Valid size of last name is from 2, to 30 characters")
     public String getLastName() { return lastName; }
 
     @Column(name = "email")
+    @NotNull(message = "Email is required")
+    @Email(message = "Invalid email")
     public String getEmail() { return email; }
 
 

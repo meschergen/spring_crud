@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <title>User info</title>
     </head>
     <body>
         <p th:text="${user.toString()}"></p>
+
+        <div>
+            <a href="/users"> RETURN_TO_USER_LIST </a>
+        </div>
     </body>
 </html>

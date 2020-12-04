@@ -19,8 +19,11 @@ public interface UserDao extends Dao<User> {
     List<User> getAsList();
 
     @Override
-    void remove(User user);
+    void remove(Long id);
 
     @Override
     User getById(Long id);
+
+    @Override
+    void update(Long id, User user);
 }
