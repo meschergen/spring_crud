@@ -2,10 +2,11 @@ package web.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,33 +21,44 @@ public class UserDaoImp implements UserDao{
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @Transactional
     @Override
     public void add(User user) {
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getAsList() {
-        List<User> li = new ArrayList<>();
-        li.add(new User(1L, "Ivan1", "Ivanov1","email_1"));
-        li.add(new User(2L, "Ivan2", "Ivanov2","email_2"));
-        li.add(new User(3L, "Ivan3", "Ivanov3","email_3"));
-        li.add(new User(4L, "Ivan4", "Ivanov4","email_4"));
-        return li;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.createQuery("FROM User").getResultList();
     }
 
+    @Transactional
     @Override
     public void remove(Long id) {
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public User getById(Long id) {
-        return new User(id,"Ivan" + id, "Ivanov" + id,"email_" + id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.find(User.class, id);
     }
 
+    @Transactional
     @Override
     public void update(Long id, User user) {
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(user);
+        entityManager.getTransaction().commit();
     }
 }

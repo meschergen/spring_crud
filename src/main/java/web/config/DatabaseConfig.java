@@ -12,6 +12,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import web.model.User;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class DatabaseConfig {
         lemf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         lemf.setDataSource(getDataSource());
         lemf.setPersistenceUnitName("someJpaPersistenceUnit");
-        lemf.setPackagesToScan("java");
+        lemf.setPackagesToScan("web");
         lemf.setJpaProperties(getHibernateProperties());
         return lemf;
     }

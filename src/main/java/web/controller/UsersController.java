@@ -63,7 +63,7 @@ public class UsersController {
                              @PathVariable("id") long id) {
 
         if (bindingResult.hasErrors()) {
-            return "users/edit;
+            return "users/edit";
         }
         userDao.update(id, user);
         return "redirect:/users";

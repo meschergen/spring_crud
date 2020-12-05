@@ -5,7 +5,7 @@
         <title>User info</title>
     </head>
     <body>
-        <p th:text="${user.toString()}"></p>
+        <p th:utext="${user.toStringHTML()}"></p>
 
         <div>
             <a href="/users"> RETURN_TO_USER_LIST </a>

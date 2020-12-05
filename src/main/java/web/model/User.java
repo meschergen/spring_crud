@@ -70,4 +70,12 @@ public class User {
                 + "\nEmail = "        + email
                 + "\n";
     }
+
+    public String toStringHTML() {
+        return "<hr>Id = "              + id
+                + "<br>First Name = "   + firstName
+                + "<br>Last Name = "    + lastName
+                + "<br>Email = "        + email
+                + "<hr>";
+    }
 }
