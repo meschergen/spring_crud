@@ -26,4 +26,6 @@ public interface UserDao extends Dao<User> {
 
     @Override
     void update(Long id, User user);
+
+    User getByUsername(String username);
 }

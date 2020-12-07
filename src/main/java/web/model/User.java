@@ -1,9 +1,15 @@
 package web.model;
 
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * 04.12.2020
@@ -13,23 +19,29 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
+    private String username;
+    private String password;
+    private Set<Role> roles;
 
     public User(){ }
 
-    public User(String firstName, String lastName, String email){
+    public User(String firstName, String lastName, String email, String username, String password, Set<Role> roles){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.password = password;
+
     }
 
-    public User(Long id, String firstName, String lastName, String email){
-        this(firstName, lastName, email);
+    public User(Long id, String firstName, String lastName, String email, String username, String password, Set<Role> roles){
+        this(firstName, lastName, email, username, password, roles);
         this.id = id;
     }
 
@@ -53,6 +65,22 @@ public class User {
     @Email(message = "Invalid email")
     public String getEmail() { return email; }
 
+    @Override
+    @Column(name = "username", unique = true)
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
 
     public void setId(Long id) { this.id = id; }
 
@@ -77,5 +105,41 @@ public class User {
                 + "<br>Last Name = "    + lastName
                 + "<br>Email = "        + email
                 + "<hr>";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 }

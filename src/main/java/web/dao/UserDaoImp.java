@@ -61,4 +61,10 @@ public class UserDaoImp implements UserDao{
         entityManager.merge(user);
         entityManager.getTransaction().commit();
     }
+
+    @Override
+    public User getByUsername(String username) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.find(User.class, username);
+    }
 }
