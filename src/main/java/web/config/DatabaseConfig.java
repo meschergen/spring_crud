@@ -28,8 +28,12 @@ import java.util.Properties;
 @ComponentScan(value = "web")
 public class DatabaseConfig {
 
-    @Autowired
     Environment env;
+
+    @Autowired
+    public void setEnvironment(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean(){

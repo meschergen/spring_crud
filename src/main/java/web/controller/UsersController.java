@@ -20,8 +20,12 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UsersController {
 
-    @Autowired
     private UserDao userDao;
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @GetMapping()
     public String index(ModelMap model){

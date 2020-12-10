@@ -20,7 +20,7 @@ public class StartController {
     public String printWelcome(ModelMap model) {
         List<String> messages = new ArrayList<>();
         messages.add("Hello");
-        messages.add("Im F I N A L L Y ok!");
+        messages.add("Im F I N A L L Y ok, and SECURE!");
         messages.add("CongratZ!");
         model.addAttribute("messages", messages);
         return "index";

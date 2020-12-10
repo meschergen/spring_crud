@@ -18,22 +18,33 @@ import web.config.handler.LoginSuccessHandler;
  *
  * @author MescheRGen
  */
-@Configuration
+@Configuration // притянестя по цепочке, через EnableWebSecurity, необязательно
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
-    private final LoginSuccessHandler loginSuccessHandler;
+    private  UserDetailsService userDetailsService;
+    private  LoginSuccessHandler loginSuccessHandler;
 
-    public SecurityConfig(@Qualifier("userDetailsServiceImp") UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
+    //public SecurityConfig(@Qualifier("userDetailsServiceImp") UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
+    //    this.userDetailsService = userDetailsService;
+    //    this.loginSuccessHandler = loginSuccessHandler;
+    //}
+
+    @Autowired
+    @Qualifier("userDetailsServiceImp")
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setLoginSuccessHandler(LoginSuccessHandler loginSuccessHandler) {
         this.loginSuccessHandler = loginSuccessHandler;
     }
 
     /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("ADMIN").password("1234").roles("ROLE_ADMIN")
+                .withUser("ADMIN").password("1234").roles("ROLE_ADMIN") // TODO без ROLE_ !
                 .and()
                 .withUser("Johny").password("test").roles("ROLE_USER");
     }*/
@@ -50,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/login")
                 .successHandler(loginSuccessHandler)
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/login") // /login - адрес по умолчанию, можно не указывать
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 .permitAll();
@@ -67,12 +78,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/hello").hasAnyRole("ROLE_ADMIN").anyRequest().authenticated()
-                .antMatchers("/users/info").hasAnyRole("ROLE_USER")
+                .antMatchers("/users/info").hasAnyRole("ROLE_USER") // TODO - role без Role_ !
                 .antMatchers("/users/edit").hasAnyRole("ROLE_ADMIN")
-                .antMatchers("/users/list").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/users/list").hasAnyRole("ROLE_ADMIN") // можно переработать через "/users/**"
                 .antMatchers("/").permitAll();
 
-        //@TODO: ДОСТУП к crud только админу. Доступ к инфо- И админу И юзеру (частично сделано)
+        //TODO: ДОСТУП к crud только админу. Доступ к инфо- И админу И юзеру (частично сделано)
     }
 
     @Bean
