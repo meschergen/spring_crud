@@ -79,6 +79,7 @@ public class User implements UserDetails {
     @Override
     @Column(name = "password")
     @NotNull(message = "Password is required")
+    @Size(min = 4, message = "Password must contain, at least, 4 symbols")
     public String getPassword() {
         return password;
     }

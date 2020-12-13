@@ -56,7 +56,7 @@ public class UsersController {
         return "users/registration";
     }
 
-    @PostMapping()
+    @PostMapping("/**")
     public String insertIntoDatabase(@ModelAttribute("user") @Valid User user,
                                      BindingResult bindingResult, Principal principal) {
 
