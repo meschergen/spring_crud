@@ -5,13 +5,16 @@
         <title>Prod'aksh_N x)</title>
     </head>
     <body>
-    <div>
-        <th:block th:each="msg : ${messages}">
-            <h1 th:text="${msg}"></h1>
-        </th:block>
-    </div>
-    <div>
-        <a href="/users">USER_LIST</a>
-    </div>
+        <div>
+            <th:block th:each="msg : ${messages}">
+                <h1 th:text="${msg}"></h1>
+            </th:block>
+        </div>
+        <div>
+            <a href="/users"> USER_LIST </a>
+        </div>
+        <div>
+            <a href="/login"> LOGIN </a>
+        </div>
     </body>
 </html>

@@ -1,12 +1,14 @@
 package web.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -18,12 +20,23 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao{
 
-    @Autowired
     private EntityManagerFactory entityManagerFactory;
+    private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     @Override
-    public void add(User user) {
+    public void add(User user) { // TODO шифровать пароль, при регистрации?
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(user);
@@ -63,8 +76,19 @@ public class UserDaoImp implements UserDao{
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    //@Transactional
     public User getByUsername(String username) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.find(User.class, username);
+        //entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("FROM User user WHERE user.username =:username");
+        List<User> ul = query.setParameter("username", username).getResultList();
+        //entityManager.getTransaction().commit();
+        if (ul.isEmpty()) {
+            return null;
+        } else {
+            return ul.get(0);
+        }
+        //return (User) query.getSingleResult();
     }
 }

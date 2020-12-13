@@ -2,39 +2,56 @@ package web.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
+import java.util.Set;
+
 /**
  * 08.12.2020
  *
  * @author MescheRGen
  */
 
+@Entity
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
     private Long id;
-    private String role;
+    private String name;
+    private Set<User> users;
 
-    public Role(Long id, String role) {
-        this.id = id;
-        this.role = role;
-    }
+    public Role() { }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
+    }
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    @ManyToMany(mappedBy = "roles")
+    public Set<User> getUsers() {
+        return users;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
-    public String getAuthority() {
-        return role;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    @Transient
+    public String getAuthority() {
+        return name;
+    }
+
 }

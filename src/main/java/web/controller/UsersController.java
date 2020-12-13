@@ -69,7 +69,7 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             return "users/edit";
         }
-        userDao.update(id, user);
+        userDao.update(id, user); //убрать id?
         return "redirect:/users";
     }
 

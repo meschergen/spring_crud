@@ -1,12 +1,14 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.model.User;
+
+import javax.transaction.Transactional;
 
 /**
  * 07.12.2020
@@ -16,9 +18,10 @@ import web.model.User;
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private final UserDao userDao;
+    private UserDao userDao;
 
-    public UserDetailsServiceImp(UserDao userDao) {
+    @Autowired
+    public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -27,7 +30,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Override
-    @Transactional
+    @Transactional // из-за Lazy Init
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getByUsername(username);
         if (user == null) {

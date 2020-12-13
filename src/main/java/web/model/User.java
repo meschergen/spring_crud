@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private String password;
     private Set<Role> roles;
 
+
     public User(){ }
 
     public User(String firstName, String lastName, String email, String username, String password, Set<Role> roles){
@@ -39,7 +40,7 @@ public class User implements UserDetails {
         this.email = email;
         this.username = username;
         this.password = password;
-
+        this.roles = roles;
     }
 
     public User(Long id, String firstName, String lastName, String email, String username, String password, Set<Role> roles){
@@ -69,21 +70,32 @@ public class User implements UserDetails {
 
     @Override
     @Column(name = "username", unique = true)
+    @NotNull(message = "Username is required")
+    @Size(min = 4, max = 20, message = "Valid size of username is from 4, to 20 characters")
     public String getUsername() {
         return username;
     }
 
     @Override
     @Column(name = "password")
+    @NotNull(message = "Password is required")
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    public Set<Role> getRoles() {
+        return roles;
     }
 
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    }
 
 
     public void setId(Long id) { this.id = id; }
@@ -93,6 +105,19 @@ public class User implements UserDetails {
     public void setLastName(String lastName) { this.lastName = lastName; }
 
     public void setEmail(String email) { this.email = email; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 
     @Override
     public String toString() {
@@ -112,38 +137,27 @@ public class User implements UserDetails {
     }
 
     @Override
+    @Transient
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @Transient
     public boolean isEnabled() {
         return true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
 }

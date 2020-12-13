@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.sprinfgramework.org/schema/security">
     <head>
         <meta charset="UTF-8">
         <title>User info</title>
@@ -9,6 +9,13 @@
 
         <div>
             <a href="/users"> RETURN_TO_USER_LIST </a>
+        </div>
+
+        <sec:authorize access="hasRole('ADMIN')">
+            Manage Users
+        </sec:authorize>
+        <div>
+            <a href="/logout"> LOGOUT</a>
         </div>
     </body>
 </html>
