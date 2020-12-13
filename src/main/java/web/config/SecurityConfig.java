@@ -58,9 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //даём доступ к форме login всем
         http.formLogin()
-                //.loginPage("/login")
                 .successHandler(loginSuccessHandler)
-                //.loginProcessingUrl("/login") // /login - адрес по умолчанию, можно не указывать
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll();
@@ -68,22 +66,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //разрешаем logout всем
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
                 .csrf().disable(); // выключение кроссдоменной секьюрности
 
-        // страница регистрации недоступна авторизованным пользователям
         http.authorizeRequests()
                 .antMatchers("/login").anonymous()
-                //.antMatchers("/hello").hasAnyRole("ADMIN").anyRequest().authenticated()
-                //.antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/users/registration").anonymous()
                 .antMatchers("/users/info/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/users/edit").hasRole("ADMIN")
                 .antMatchers("/users/list").hasRole("ADMIN")
-                .antMatchers("users/new").hasRole("ADMIN") // можно переработать через "/users/**"
-                .antMatchers("/").permitAll();
+                .antMatchers("users/new").hasRole("ADMIN")
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Bean

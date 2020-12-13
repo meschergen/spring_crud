@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <title>Prod'aksh_N x)</title>
@@ -10,11 +10,22 @@
                 <h1 th:text="${msg}"></h1>
             </th:block>
         </div>
-        <div>
+
+        <div sec:authorize="hasRole('ADMIN')">
             <a href="/users"> USER_LIST </a>
         </div>
-        <div>
-            <a href="/login"> LOGIN </a>
+
+        <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/users/{id}(id=${userId})}"> MY_ACCOUNT </a>
+            <br>
+            <a href="/logout"> LOGOUT </a>
         </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a href="/login"> LOGIN </a>
+            <br>
+            <a href="/users/registration"> REGISTER </a>
+        </div>
+
     </body>
 </html>

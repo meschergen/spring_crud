@@ -9,6 +9,7 @@ import web.dao.UserDao;
 import web.model.User;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * 04.12.2020
@@ -50,15 +51,24 @@ public class UsersController {
         return "users/edit";
     }
 
+    @GetMapping("/registration")
+    public String userRegistration(@ModelAttribute("user") User user) {
+        return "users/registration";
+    }
+
     @PostMapping()
     public String insertIntoDatabase(@ModelAttribute("user") @Valid User user,
-                                     BindingResult bindingResult) {
+                                     BindingResult bindingResult, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             return "users/new";
         }
+
         userDao.add(user);
-        return "redirect:/users";
+        if (principal != null) {
+            return "redirect:/users";
+        }
+        return "redirect:/";
     }
 
     @PatchMapping("/{id}")
