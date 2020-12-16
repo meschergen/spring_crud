@@ -28,7 +28,7 @@ public class UsersController {
         this.userDao = userDao;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public String index(ModelMap model){
         model.addAttribute("userList", userDao.getAsList());
         return "users/list";
@@ -61,7 +61,11 @@ public class UsersController {
                                      BindingResult bindingResult, Principal principal) {
 
         if (bindingResult.hasErrors()) {
-            return "users/new";
+            if (principal != null) {
+                return "users/new";
+            } else {
+                return "users/registration";
+            }
         }
 
         userDao.add(user);
