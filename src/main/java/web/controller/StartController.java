@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class StartController {
 
-    private UserDao userDao;
+    private UserDao userDao; // Или Создать UserService.class?
 
     @Autowired
     public void setUserDao(UserDao userDao) {

@@ -26,11 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     private ApplicationContext applicationContext;
 
-
-    //public WebConfig(ApplicationContext applicationContext) {
-    //    this.applicationContext = applicationContext;
-    //}
-
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -49,7 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new SpringSecurityDialect()); // !!!!!!!!!!!!!
+        templateEngine.addDialect(new SpringSecurityDialect()); // для успешной отработки sec:* в thymeleaf
         templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }

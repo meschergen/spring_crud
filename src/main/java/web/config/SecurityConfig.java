@@ -20,7 +20,7 @@ import web.config.handler.LoginSuccessHandler;
  *
  * @author MescheRGen
  */
-@Configuration // притянестя по цепочке, через EnableWebSecurity, необязательно
+// @Configuration // притянестя по цепочке, через EnableWebSecurity, необязательно
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

@@ -3,7 +3,6 @@ package web.config.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import web.dao.UserDao;
@@ -26,6 +25,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
     private UserDao userDao; // для возможности вытащить user.id, через username
                             // чтобы сформировать с помощью id ссылку на страницу пользователя
+                            // или добавить UserService.class?
 
     @Autowired
     public void setUserDao(UserDao userDao) {

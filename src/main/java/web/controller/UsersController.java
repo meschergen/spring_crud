@@ -28,7 +28,7 @@ public class UsersController {
         this.userDao = userDao;
     }
 
-    @GetMapping()
+    @GetMapping("")
     public String index(ModelMap model){
         model.addAttribute("userList", userDao.getAsList());
         return "users/list";

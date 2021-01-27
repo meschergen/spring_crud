@@ -22,6 +22,7 @@ import java.util.Properties;
  *
  * @author MescheRGen
  */
+
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
